@@ -60,7 +60,7 @@ const ForgotPassword = () => {
             className="mt-5 max-w-[200px] max-h-[200px]"
           />
         </div>
-        <div className="w-full px-16 py-16 flex flex-col justify-around text-center">
+        <div className="w-full px-6 lg:px-16 py-16 flex flex-col justify-around text-center">
           <div>
             <h1 className="font-medium text-2xl lg:text-4xl text-center">
               Reset <span className="text-textlime">Password</span>

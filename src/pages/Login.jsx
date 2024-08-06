@@ -53,7 +53,7 @@ const Login = () => {
           </p>
           <img src={animation} alt="" className="max-w-[300px] max-h-[300px]" />
         </div>
-        <div className="w-full px-16 py-16">
+        <div className="w-full px-6 lg:px-16 py-16">
           <h1 className="font-medium text-2xl lg:text-4xl text-center">
             Welcome Back To <span className="text-textlime">DOXA</span>!
           </h1>

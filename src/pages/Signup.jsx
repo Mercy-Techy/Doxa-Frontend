@@ -62,7 +62,7 @@ const Signup = () => {
           </p>
           <img src={animation} alt="" className="max-w-[300px] max-h-[300px]" />
         </div>
-        <div className="w-full px-16 py-8">
+        <div className="w-full px-6 lg:px-16 py-8">
           <h1 className="font-medium text-2xl lg:text-4xl text-center">
             Get started on <span className="text-textlime">DOXA</span>!
           </h1>

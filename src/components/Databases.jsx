@@ -43,9 +43,11 @@ const Databases = () => {
           action="Create"
         />
       </Modal>
-      <div className="bg-white px-10 py-8 p mt-10 min-h-screen">
-        <div className="flex justify-between items-center">
-          <h1 className="font-semibold text-xl ">All Databases</h1>
+      <div className="bg-white px-10 py-8 p mt-10 min-h-screen w-full">
+        <div className="md:flex justify-between items-center">
+          <h1 className="hidden sm:block font-semibold text-xl ">
+            All Databases
+          </h1>
           <button
             onClick={toggleModal}
             className="text-white bg-authblue text-sm px-4 py-2 rounded-md font-semibold"

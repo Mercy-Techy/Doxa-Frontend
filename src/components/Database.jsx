@@ -24,7 +24,6 @@ const Database = ({ name, collections, documents, _id }) => {
       queryClient.setQueryData(["database"], (oldDbs) => {
         if (oldDbs) {
           const updatedDbs = oldDbs.filter((db) => db._id !== _id);
-          console.log(updatedDbs);
           oldDbs = updatedDbs;
         }
         return oldDbs;
@@ -68,8 +67,8 @@ const Database = ({ name, collections, documents, _id }) => {
             <h2 className="font-medium capitalize">{name}</h2>
           </div>
           <div className="my-4">
-            <p className="font-medium">Collections: {collections}</p>
-            <p className="font-medium">Documents: {documents}</p>
+            <p className="font-medium">Collections: {collections || 0}</p>
+            <p className="font-medium">Documents: {documents || 0}</p>
           </div>
           <div className="flex justify-between items-center">
             <button className="rounded-md border border-textgray text-textgray text-xs px-4 py-1">

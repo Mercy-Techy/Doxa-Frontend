@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useText } from "../store/DashBoardContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import woman from "../assets/woman1.png";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -18,6 +18,7 @@ import { toast } from "react-toastify";
 
 const Account = () => {
   const { accountFn } = useText();
+  const [defaultImage, setDefaultImage] = useState();
   const navigate = useNavigate();
 
   const { isPending, data, isError, error } = useQuery({
@@ -31,7 +32,17 @@ const Account = () => {
     isPending: aIsPending,
   } = useMutation({
     mutationFn: uploadAvatar,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["user"] }),
+    onMutate: ({ image }) => {
+      const newImageUrl = URL.createObjectURL(image);
+      setDefaultImage(newImageUrl);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+    onError: () => {
+      setDefaultImage();
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
   });
   const {
     error: passwordError,
@@ -95,7 +106,6 @@ const Account = () => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const userDetails = Object.fromEntries(formData);
-    console.log(userDetails);
     userMutate(userDetails);
   };
 
@@ -106,7 +116,7 @@ const Account = () => {
         <div className="flex flex-col items-center">
           <div className="relative">
             <img
-              src={data?.avatar?.url || woman}
+              src={defaultImage || data?.avatar?.url || woman}
               alt="avatar"
               className="rounded-full w-[150px] h-[150px] object-cover"
             />

@@ -4,6 +4,8 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import AddField from "./AddField";
+import { queryClient } from "../App";
 
 const CreateCollection = ({
   cancelModal,
@@ -13,13 +15,26 @@ const CreateCollection = ({
   defaultValue,
 }) => {
   const { database } = useParams();
-  const navigate = useNavigate();
   const { isPending, error, isError, mutate } = useMutation({
     mutationFn,
-    onSuccess: () => navigate(`/dashboard/${database}/collection`),
+    onSuccess: (data) => {
+      queryClient.setQueryData(["collection", database], (oldCollections) => {
+        if (oldCollections) {
+          if (action === "Create") {
+            oldCollections.push(data.data);
+          }
+        }
+      });
+      cancelModal();
+    },
+    onSettled: () =>
+      queryClient.invalidateQueries({
+        queryKey: ["collection", database],
+      }),
   });
   const nameRef = useRef("");
   const [invalid, setInvalid] = useState(false);
+  const [edit, setEdit] = useState({ name: "", id: "", edit: false });
   const [formDetails, setformDetails] = useState({
     name: "",
     show: false,
@@ -53,14 +68,62 @@ const CreateCollection = ({
       showFields: true,
     }));
   };
-  const deleteField = (index) => {
-    const newDetails = formDetails.fields.filter((field, inx) => inx !== index);
+
+  const editFieldHandler = (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const fieldDetails = Object.fromEntries(formData);
+    const updatedDetails = [...formDetails.fields];
+    updatedDetails[edit.id] = fieldDetails;
     setformDetails((prevState) => ({
       ...prevState,
-      fields: newDetails,
-      show: true,
-      showFields: false,
+      show: false,
+      fields: updatedDetails,
+      showFields: true,
     }));
+    setEdit({ name: "", id: "", edit: false });
+  };
+
+  const cancelEdit = () => {
+    setEdit({ name: "", id: "", edit: false });
+    setformDetails((prevState) => ({
+      ...prevState,
+      showFields: true,
+    }));
+  };
+
+  const cancelFieldHandler = () => {
+    if (formDetails.fields?.length == 0) {
+      setformDetails((prevState) => ({
+        ...prevState,
+        show: false,
+        showFields: false,
+      }));
+    } else {
+      setformDetails((prevState) => ({
+        ...prevState,
+        show: false,
+        showFields: true,
+      }));
+    }
+  };
+  const deleteField = (index) => {
+    const newDetails = formDetails.fields.filter((field, inx) => inx !== index);
+    if (newDetails.length == 0) {
+      setformDetails((prevState) => ({
+        ...prevState,
+        fields: [],
+        show: false,
+        showFields: false,
+      }));
+    } else {
+      setformDetails((prevState) => ({
+        ...prevState,
+        fields: newDetails,
+        show: false,
+        showFields: true,
+      }));
+    }
   };
   const addCollection = () => {
     mutate({ ...formDetails, database });
@@ -75,6 +138,12 @@ const CreateCollection = ({
     }
   }, [invalid]);
 
+  useEffect(() => {
+    if (isError) {
+      toast.error(error?.response?.data?.message || error.message);
+    }
+  }, [isError, error]);
+
   let content = (
     <>
       <h1 className="font-medium text-authblue text-xl text-center">
@@ -86,7 +155,7 @@ const CreateCollection = ({
         <input
           type="text"
           ref={nameRef}
-          defaultValue={defaultValue}
+          defaultValue={formDetails.name}
           className="outline-none border border-stone-300 mt-2 w-full p-2 rounded-lg"
         />
       </div>
@@ -130,7 +199,12 @@ const CreateCollection = ({
                 <p>Required: {field.required}</p>
               </div>
               <div className="flex gap-3 items-end">
-                <span className="bg-stone-100 rounded-lg ">
+                <span
+                  className="bg-stone-100 rounded-lg "
+                  onClick={() =>
+                    setEdit({ name: field.name, id: index, edit: true })
+                  }
+                >
                   <MdOutlineModeEdit className="m-2 text-xs text-stone-400" />
                 </span>
                 <span
@@ -169,64 +243,21 @@ const CreateCollection = ({
   }
   if (formDetails.show) {
     content = (
-      <form onSubmit={addFieldHandler}>
-        <div className="flex gap-4 items-center my-2">
-          <label className="font-bold">Field name:</label>
-          <input
-            type="text"
-            name="name"
-            className="outline-none border border-authblue text-black font-semibold text-[1rem] mt-2 flex-1 p-2 rounded-lg"
-          />
-        </div>
-        <div className="flex gap-4 items-center my-2">
-          <label className="font-bold">Data Type:</label>
-          <select
-            type="text"
-            name="dataType"
-            className="outline-none border border-authblue text-black font-semibold text-[1rem] mt-2 flex-1 p-2 rounded-lg"
-          >
-            <option value="text">Text</option>
-            <option value="numeric value">Numeric value</option>
-            <option value="true/false">True/False</option>
-            <option value="image">Image</option>
-            <option value="video">Video</option>
-            <option value="document">Document</option>
-            <option value="link to another document">
-              Link to another document
-            </option>
-          </select>
-        </div>
-        <div className="flex gap-4 items-center my-2">
-          <label className="font-bold">Required:</label>
-          <select
-            type="text"
-            name="required"
-            className="outline-none border border-authblue text-black font-semibold text-[1rem] mt-2 flex-1 p-2 rounded-lg"
-          >
-            <option value="true">True</option>
-            <option value="false">False</option>
-          </select>
-        </div>
-        <div className="flex gap-4 items-center my-2">
-          <label className="font-bold">Unique:</label>
-          <select
-            type="text"
-            name="unique"
-            className="outline-none border border-authblue text-black font-semibold text-[1rem] mt-2 flex-1 p-2 rounded-lg"
-          >
-            <option value="true">True</option>
-            <option value="false">False</option>
-          </select>
-        </div>
-        <div className="text-center">
-          <button
-            className="text-white bg-authblue text-sm px-10 py-2 rounded-md font-semibold mt-6"
-            type="submit"
-          >
-            Add
-          </button>
-        </div>
-      </form>
+      <AddField
+        addFieldHandler={addFieldHandler}
+        cancelFieldHandler={cancelFieldHandler}
+        action="Add"
+      />
+    );
+  }
+  if (edit.edit) {
+    content = (
+      <AddField
+        addFieldHandler={editFieldHandler}
+        cancelFieldHandler={cancelEdit}
+        action="Edit"
+        {...edit}
+      />
     );
   }
   return <div className="w-[30rem]  font-koho p-2">{content}</div>;
