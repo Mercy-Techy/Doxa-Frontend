@@ -49,7 +49,7 @@ const Home = () => {
         <img
           src={dbEx}
           alt="image"
-          className="mx-auto w-2/3 -mt-24 sm:-mt-28 md:-mt-80"
+          className="mx-auto w-2/3 -mt-24 sm:-mt-28 md:-mt-64 lg:-mt-80"
         />
       </div>
       <div ref={aboutUsRef} className="container mx-auto px-16">

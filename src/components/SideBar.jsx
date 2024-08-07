@@ -3,12 +3,14 @@ import { CgMenuLeftAlt } from "react-icons/cg";
 import logo from "../assets/logo.png";
 import { FaDatabase } from "react-icons/fa6";
 import { MdOutlineSettings } from "react-icons/md";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { FiLogOut } from "react-icons/fi";
+import { deleteToken } from "../util/auth";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [styles, setStyles] = useState({ display: "hidden", width: "w-1/4" });
+  const navigate = useNavigate();
 
   const toggleBar = () => {
     setStyles({
@@ -52,7 +54,13 @@ const Sidebar = () => {
               </NavLink>
             </ul>
           </div>
-          <div className="flex gap-5 mt-5 items-center justify-start w-2/4 hover:text-textlime font-bold">
+          <div
+            className="flex gap-5 mt-5 items-center justify-start w-2/4 hover:text-textlime font-bold cursor-pointer"
+            onClick={() => {
+              deleteToken();
+              navigate("/");
+            }}
+          >
             <FiLogOut className="text-lg" />
             <span className="lg:text-xl">Log out</span>
           </div>

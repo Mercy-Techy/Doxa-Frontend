@@ -41,7 +41,7 @@ const Database = ({ name, collections, documents, _id }) => {
   };
 
   return (
-    <Link to={`${_id}/collections`}>
+    <>
       <Modal isOpen={isOpen} closeModal={toggleModal}>
         <DeleteContent
           toggleModal={toggleModal}
@@ -66,10 +66,12 @@ const Database = ({ name, collections, documents, _id }) => {
             <GoDatabase className="text-authblue" />
             <h2 className="font-medium capitalize">{name}</h2>
           </div>
-          <div className="my-4">
-            <p className="font-medium">Collections: {collections || 0}</p>
-            <p className="font-medium">Documents: {documents || 0}</p>
-          </div>
+          <Link to={`${_id}/collections`}>
+            <div className="my-4">
+              <p className="font-medium">Collections: {collections || 0}</p>
+              <p className="font-medium">Documents: {documents || 0}</p>
+            </div>
+          </Link>
           <div className="flex justify-between items-center">
             <button className="rounded-md border border-textgray text-textgray text-xs px-4 py-1">
               Invite users
@@ -91,7 +93,7 @@ const Database = ({ name, collections, documents, _id }) => {
           </div>
         </div>
       </li>
-    </Link>
+    </>
   );
 };
 

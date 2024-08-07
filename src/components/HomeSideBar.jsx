@@ -24,10 +24,10 @@ const HomeSidebar = ({ scrollToSection, aboutUsRef }) => {
               <p className="font-bold text-lg">DOXA</p>
             </div>
             <ul className="mt-10 pl-10">
-              <li className="text-2xl font-bold uppercase my-4">
+              <li className="text-lg font-bold uppercase my-4">
                 <NavLink onClick={toggleBar}>Home</NavLink>
               </li>
-              <li className="text-2xl font-bold uppercase my-4">
+              <li className="text-lg font-bold uppercase my-4">
                 <NavLink
                   onClick={() => {
                     scrollToSection(aboutUsRef);
@@ -37,7 +37,7 @@ const HomeSidebar = ({ scrollToSection, aboutUsRef }) => {
                   About Us
                 </NavLink>
               </li>
-              <li className="text-2xl font-bold uppercase my-4">
+              <li className="text-lg font-bold uppercase my-4">
                 <NavLink to="/login" onClick={toggleBar}>
                   Log In
                 </NavLink>
@@ -46,7 +46,7 @@ const HomeSidebar = ({ scrollToSection, aboutUsRef }) => {
           </div>
         </div>
       )}
-      <div className="lg:hidden flex justify-between ">
+      <div className="md:hidden flex justify-between ">
         <img src={logo} alt="logo" className="w-12" />
         <FiAlignLeft onClick={toggleBar} className="text-4xl text-white" />
       </div>

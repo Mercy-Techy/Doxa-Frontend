@@ -35,6 +35,8 @@ const CreateCollection = ({
   const nameRef = useRef("");
   const [invalid, setInvalid] = useState(false);
   const [edit, setEdit] = useState({ name: "", id: "", edit: false });
+  const [editName, setEditName] = useState(false);
+  const [editNameValue, setEditNameValue] = useState("");
   const [formDetails, setformDetails] = useState({
     name: "",
     show: false,
@@ -128,6 +130,13 @@ const CreateCollection = ({
   const addCollection = () => {
     mutate({ ...formDetails, database });
   };
+  const editNameHandler = () => {
+    if (!editNameValue || editNameValue?.length < 3) {
+      return setInvalid(!invalid);
+    }
+    setformDetails((prevState) => ({ ...prevState, name: editNameValue }));
+    setEditName(false);
+  };
 
   useEffect(() => {
     if (invalid) {
@@ -182,9 +191,35 @@ const CreateCollection = ({
     content = (
       <>
         <h1 className="font-bold text-2xl text-center">Add More</h1>
-        <p className="font-bold mt-6 capitalize">
-          Collection Name: {formDetails.name}
-        </p>
+        {!editName && (
+          <div className="flex gap-5 items-center">
+            <p className="font-bold mt-6 capitalize">
+              Collection Name: {formDetails.name}
+            </p>
+            <span
+              className="bg-stone-100 rounded mt-6"
+              onClick={() => setEditName(true)}
+            >
+              <MdOutlineModeEdit className="m-1 text-stone-400" />
+            </span>
+          </div>
+        )}
+        {editName && (
+          <div className="flex gap-5 items-center pt-3">
+            <input
+              type="text"
+              className="w-full border border-stone-300 p-2 rounded-lg outline-none"
+              defaultValue={formDetails.name}
+              onChange={(event) => setEditNameValue(event.target.value)}
+            />
+            <button
+              className="text-white bg-authblue text-sm px-10 py-2 rounded-md font-semibold"
+              onClick={editNameHandler}
+            >
+              Edit
+            </button>
+          </div>
+        )}
         <p className="font-bold my-4 text-center">Fields</p>
         <ul>
           {formDetails.fields.map((field, index) => (
@@ -260,7 +295,9 @@ const CreateCollection = ({
       />
     );
   }
-  return <div className="w-[30rem]  font-koho p-2">{content}</div>;
+  return (
+    <div className="min-w-[300px] md:w-[600px] font-koho p-2">{content}</div>
+  );
 };
 
 export default CreateCollection;

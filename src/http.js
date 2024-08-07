@@ -113,10 +113,35 @@ export const fetchCollection = async (id) => {
   });
   return response.data.data;
 };
+export const fetchCollectionDetails = async (id, database) => {
+  const token = getToken();
+  const response = await axios(
+    `${baseurl}/collection/details/${id}/${database}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  return response.data.data;
+};
+export const fetchDocument = async (id, database) => {
+  const token = getToken();
+  const response = await axios(`${baseurl}/collection/${id}/${database}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data.data;
+};
 
 export const deleteCollection = async (id) => {
   const token = getToken();
   const response = await axios.delete(`${baseurl}/collection/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+export const editCollection = async (data) => {
+  const token = getToken();
+  const response = await axios.put(`${baseurl}/collection`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data;

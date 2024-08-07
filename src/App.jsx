@@ -10,6 +10,9 @@ import Databases from "./components/Databases";
 import { DashBoardProvider } from "./store/DashBoardContext";
 import Account from "./pages/Account";
 import Collections from "./components/Collections";
+import Documents from "./components/Documents";
+import DocumentDashBoard from "./pages/DocumentDashboard";
+import Schema from "./pages/Schema";
 
 export const queryClient = new QueryClient();
 
@@ -45,6 +48,14 @@ const router = createBrowserRouter([
       {
         path: ":database/collections",
         element: <Collections />,
+      },
+      {
+        path: ":database/:collection/documents",
+        element: <DocumentDashBoard />,
+        children: [
+          { index: true, element: <Documents /> },
+          { path: "schema", element: <Schema /> },
+        ],
       },
     ],
   },

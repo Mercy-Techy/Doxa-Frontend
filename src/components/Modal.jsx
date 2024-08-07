@@ -10,6 +10,8 @@ const customStyles = {
     transform: "translate(-50%, -50%)",
     border: "none",
     boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
+    maxHeight: "90vh", // Set your desired max height here
+    overflowY: "auto",
   },
   overlay: {
     position: "fixed",

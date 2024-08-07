@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchUserDetails } from "../http";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const DashBoardBar = () => {
   const { text } = useText();
@@ -37,11 +38,13 @@ const DashBoardBar = () => {
       </div>
       <div className="hidden md:flex gap-4 items-center capitalize">
         <p>{data?.firstname || "User"}</p>
-        <img
-          src={data?.avatar?.url || woman}
-          alt="image"
-          className="w-10 h-10 rounded-full"
-        />
+        <Link to="/dashboard/account">
+          <img
+            src={data?.avatar?.url || woman}
+            alt="image"
+            className="w-10 h-10 rounded-full"
+          />
+        </Link>
       </div>
     </div>
   );
