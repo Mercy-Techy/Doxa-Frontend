@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 const Schema = () => {
   const { collection, database } = useParams();
   const { data, isError, error } = useQuery({
-    queryKey: ["collection", database, collection, "schema"],
+    queryKey: ["collection", database, collection],
     queryFn: () => fetchCollectionDetails(collection, database),
   });
 

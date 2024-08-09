@@ -20,10 +20,9 @@ const CreateCollection = ({
     onSuccess: (data) => {
       queryClient.setQueryData(["collection", database], (oldCollections) => {
         if (oldCollections) {
-          if (action === "Create") {
-            oldCollections.push(data.data);
-          }
+          oldCollections.push(data.data);
         }
+        return oldCollections;
       });
       cancelModal();
     },

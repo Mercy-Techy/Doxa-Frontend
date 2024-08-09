@@ -48,6 +48,7 @@ const router = createBrowserRouter([
       {
         path: ":database/collections",
         element: <Collections />,
+        children: [],
       },
       {
         path: ":database/:collection/documents",

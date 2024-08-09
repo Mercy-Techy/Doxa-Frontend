@@ -6,6 +6,7 @@ import { fetchUserDetails } from "../http";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { CgArrowLongLeft } from "react-icons/cg";
 
 const DashBoardBar = () => {
   const { text } = useText();
@@ -22,28 +23,35 @@ const DashBoardBar = () => {
   }, [isError, error]);
 
   return (
-    <div className="w-full md:flex justify-between items-center ">
-      <div>
-        <p className="font-semibold capitalize text-3xl">{text.heading}</p>
-        <p className="text-textgray text-sm mb-6 md:mb-0">
-          Manage {text.subHeading}
-        </p>
-      </div>
-      <div className="relative w-2/6">
-        <input
-          type="text"
-          className="outline-none rounded-lg px-4 py-2 w-full"
-        />
-        <CiSearch className="absolute bottom-2 left-2 font-extrabold text-xl" />
-      </div>
-      <div className="hidden md:flex gap-4 items-center capitalize">
-        <p>{data?.firstname || "User"}</p>
-        <Link to="/dashboard/account">
-          <img
-            src={data?.avatar?.url || woman}
-            alt="image"
-            className="w-10 h-10 rounded-full"
+    <div className="w-full">
+      <div className="md:flex justify-between items-center">
+        <div>
+          <p className="font-semibold capitalize text-3xl">{text.heading}</p>
+          <p className="text-textgray text-sm mb-6 md:mb-0">
+            Manage {text.subHeading}
+          </p>
+        </div>
+        <div className="relative w-2/6">
+          <input
+            type="text"
+            className="outline-none rounded-lg px-4 py-2 w-full"
           />
+          <CiSearch className="absolute bottom-2 left-2 font-extrabold text-xl" />
+        </div>
+        <div className="hidden md:flex gap-4 items-center capitalize">
+          <p>{data?.firstname || "User"}</p>
+          <Link to="/dashboard/account">
+            <img
+              src={data?.avatar?.url || woman}
+              alt="image"
+              className="w-10 h-10 rounded-full"
+            />
+          </Link>
+        </div>
+      </div>
+      <div className="mt-2">
+        <Link to=".">
+          <CgArrowLongLeft className="text-4xl" />
         </Link>
       </div>
     </div>

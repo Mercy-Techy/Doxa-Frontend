@@ -29,9 +29,9 @@ const AddField = ({
           <option value="image">Image</option>
           <option value="video">Video</option>
           <option value="document">Document</option>
-          <option value="link to another document">
+          {/* <option value="link to another document">
             Link to another document
-          </option>
+          </option> */}
         </select>
       </div>
       <div className="flex gap-4 items-center my-2">

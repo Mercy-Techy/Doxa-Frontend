@@ -60,7 +60,7 @@ const Collection = ({ collection, database }) => {
           toggleEdit={toggleEdit}
         />
       </Modal>
-      <li className="shadow-lg rounded-xl mt-10 max-w-[280px] h-48">
+      <li className="shadow-lg rounded-xl mt-10 mix-w-[250px] h-48">
         <div className="bg-green-100 h-2 rounded-t-xl"></div>
         <div className="p-6">
           <div className="flex gap-6 items-center">
