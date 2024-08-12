@@ -8,8 +8,10 @@ import { toast } from "react-toastify";
 import { queryClient } from "../App";
 import DeleteContent from "./DeleteContent";
 import Modal from "./Modal";
+import { useParams } from "react-router-dom";
 
 const Document = ({ documentDetails }) => {
+  const { collection, database } = useParams();
   const [download1, setDownload1] = useState(false);
   const [download2, setDownload2] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +26,10 @@ const Document = ({ documentDetails }) => {
       queryClient.setQueryData(
         ["collection", "documents", database, collection],
         (oldDocuments) => {
+          console.log(oldDocuments);
           if (oldDocuments) {
+            console.log("working");
+
             const updatedDocuments = oldDocuments.filter(
               (doc) => doc._id !== documentDetails._id
             );
@@ -40,7 +45,8 @@ const Document = ({ documentDetails }) => {
         queryKey: ["collection", "documents"],
       }),
     onError: (error) => {
-      return toast.error(error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || error.message);
+      return toggleModal();
     },
   });
 

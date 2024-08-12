@@ -45,6 +45,7 @@ const EditCollection = ({ collection, database, toggleEdit }) => {
 
   useEffect(() => {
     if (isError) {
+      toggleEdit();
       toast.error(error?.response?.data?.message || error.message);
     }
   }, [isError, error]);

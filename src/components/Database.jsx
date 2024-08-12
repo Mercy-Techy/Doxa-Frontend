@@ -32,7 +32,8 @@ const Database = ({ name, collections, documents, _id }) => {
     },
     onSettled: () => queryClient.invalidateQueries({ queryKey: ["database"] }),
     onError: (error) => {
-      return toast.error(error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || error.message);
+      return toggleModal();
     },
   });
 

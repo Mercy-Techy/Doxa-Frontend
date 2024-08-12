@@ -3,16 +3,19 @@ import { addDocument } from "../http";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { queryClient } from "../App";
+import { useParams } from "react-router-dom";
 
 const fileDataTypes = ["image", "video", "document"];
 
-const AddDocument = ({ collection, database, cancelModal }) => {
+const AddDocument = ({ cancelModal }) => {
+  const { collection, database } = useParams();
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: addDocument,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.setQueryData(
-        ["collection", database, collection, "documents"],
+        ["collection", "documents", database, collection],
         (oldDocuments) => {
+          console.log("working", oldDocuments);
           if (oldDocuments) {
             oldDocuments.push(data.data);
           }
@@ -36,6 +39,7 @@ const AddDocument = ({ collection, database, cancelModal }) => {
 
   useEffect(() => {
     if (isError) {
+      cancelModal();
       toast.error(error?.response?.data?.message || error.message);
     }
   }, [isError, error]);

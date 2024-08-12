@@ -35,7 +35,8 @@ const Collection = ({ collection, database }) => {
     onSettled: () =>
       queryClient.invalidateQueries({ queryKey: ["collection"] }),
     onError: (error) => {
-      return toast.error(error?.response?.data?.message || error.message);
+      toast.error(error?.response?.data?.message || error.message);
+      return toggleModal();
     },
   });
 

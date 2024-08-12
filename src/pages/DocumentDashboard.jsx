@@ -29,11 +29,7 @@ const DocumentDashBoard = () => {
   return (
     <>
       <Modal isOpen={isOpen} closeModal={toggleModal}>
-        <AddDocument
-          collection={data}
-          database={database}
-          cancelModal={toggleModal}
-        />
+        <AddDocument cancelModal={toggleModal} />
       </Modal>
       <div className="bg-white px-10 py-8 p mt-2 min-h-screen">
         <div className="flex justify-between items-center">
