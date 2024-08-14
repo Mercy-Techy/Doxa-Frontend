@@ -12,7 +12,7 @@ const Collections = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { isError, data, isSuccess } = useQuery({
     queryFn: () => fetchCollection(database),
-    queryKey: ["collection", database],
+    queryKey: ["collections", database],
   });
 
   const { collectionFn } = useText();

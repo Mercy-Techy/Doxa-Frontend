@@ -7,18 +7,12 @@ import { toast } from "react-toastify";
 import AddField from "./AddField";
 import { queryClient } from "../App";
 
-const CreateCollection = ({
-  cancelModal,
-  action,
-  mutationFn,
-  _id,
-  defaultValue,
-}) => {
+const CreateCollection = ({ cancelModal, action, mutationFn }) => {
   const { database } = useParams();
   const { isPending, error, isError, mutate } = useMutation({
     mutationFn,
     onSuccess: (data) => {
-      queryClient.setQueryData(["collection", database], (oldCollections) => {
+      queryClient.setQueryData(["collections", database], (oldCollections) => {
         if (oldCollections) {
           oldCollections.push(data.data);
         }
@@ -28,7 +22,7 @@ const CreateCollection = ({
     },
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: ["collection", database],
+        queryKey: ["collections", database],
       }),
   });
   const nameRef = useRef("");

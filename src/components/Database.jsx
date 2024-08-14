@@ -67,7 +67,7 @@ const Database = ({ name, collections, documents, _id }) => {
             <GoDatabase className="text-authblue" />
             <h2 className="font-medium capitalize">{name}</h2>
           </div>
-          <Link to={`${_id}/collections`}>
+          <Link to={_id}>
             <div className="my-4">
               <p className="font-medium">Collections: {collections || 0}</p>
               <p className="font-medium">Documents: {documents || 0}</p>

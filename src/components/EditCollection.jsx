@@ -20,7 +20,7 @@ const EditCollection = ({ collection, database, toggleEdit }) => {
   const { isPending, mutate, isError, error } = useMutation({
     mutationFn: editCollection,
     onSuccess: (data) => {
-      queryClient.setQueryData(["collection", database], (oldCollections) => {
+      queryClient.setQueryData(["collections", database], (oldCollections) => {
         if (oldCollections) {
           const updatedCollections = [...oldCollections];
           const colIndex = updatedCollections.findIndex(
@@ -39,7 +39,7 @@ const EditCollection = ({ collection, database, toggleEdit }) => {
     },
     onSettled: () =>
       queryClient.invalidateQueries({
-        queryKey: ["collection"],
+        queryKey: ["collections"],
       }),
   });
 

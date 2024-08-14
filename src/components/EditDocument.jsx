@@ -1,16 +1,15 @@
 import { useMutation } from "@tanstack/react-query";
-import { addDocument } from "../http";
+import { editDocument } from "../http";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 import { queryClient } from "../App";
 import { useParams } from "react-router-dom";
 
 const fileDataTypes = ["image", "video", "document"];
 
-const AddDocument = ({ collection, cancelModal }) => {
+const EditDocument = ({ collection, cancelModal, document }) => {
   const { database } = useParams();
   const { mutate, isPending } = useMutation({
-    mutationFn: addDocument,
+    mutationFn: editDocument,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["collections", database, "documents", collection._id],
@@ -22,17 +21,26 @@ const AddDocument = ({ collection, cancelModal }) => {
       queryClient.invalidateQueries({
         queryKey: ["collections", database, "documents", collection._id],
       });
-      // cancelModal();
     },
   });
   const handleForm = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    formData.append("collectionId", collection._id);
-    formData.append("database", database);
+    formData.append("_id", document._id);
+    for (const [key, value] of formData.entries()) {
+      if (value && value?.size === 0) {
+        formData.delete(key);
+        const oldValue = document.files.find((fl) => fl.name === key);
+        formData.append(key, oldValue);
+      }
+    }
     mutate(formData);
   };
 
+  const defaultValue = (name) => {
+    const text = document?.text?.find((tx) => tx.name === name);
+    return text.value;
+  };
   return (
     <form className="md:w-[400px]" onSubmit={handleForm}>
       {collection.fields.map((field) => {
@@ -43,6 +51,7 @@ const AddDocument = ({ collection, cancelModal }) => {
               <input
                 type="text"
                 name={field.name}
+                defaultValue={defaultValue(field.name)}
                 className="outline-none border border-authblue text-black font-medium text-[14px] mt-2 flex-1 p-2 rounded-lg"
               />
             )}
@@ -50,6 +59,7 @@ const AddDocument = ({ collection, cancelModal }) => {
               <input
                 type="number"
                 name={field.name}
+                defaultValue={defaultValue(field.name)}
                 className="outline-none border border-authblue text-black font-medium text-[14px] mt-2 flex-1 p-2 rounded-lg"
               />
             )}
@@ -57,6 +67,7 @@ const AddDocument = ({ collection, cancelModal }) => {
               <select
                 type="text"
                 name={field.name}
+                defaultValue={`${defaultValue(field.name)}`}
                 className="outline-none border border-authblue text-black font-medium text-[14px] mt-2 flex-1 p-2 rounded-lg"
               >
                 <option value="true">True</option>
@@ -90,11 +101,11 @@ const AddDocument = ({ collection, cancelModal }) => {
           {isPending && (
             <span className="loading loading-spinner loading-xs"></span>
           )}
-          {!isPending && "Add"}
+          {!isPending && "Edit"}
         </button>
       </div>
     </form>
   );
 };
 
-export default AddDocument;
+export default EditDocument;

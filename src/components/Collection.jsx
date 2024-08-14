@@ -21,7 +21,7 @@ const Collection = ({ collection, database }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteCollection,
     onSuccess: () => {
-      queryClient.setQueryData(["collection", database], (oldCollections) => {
+      queryClient.setQueryData(["collections", database], (oldCollections) => {
         if (oldCollections) {
           const updatedCollections = oldCollections.filter(
             (col) => col._id !== collection._id
@@ -33,7 +33,7 @@ const Collection = ({ collection, database }) => {
       return toggleModal();
     },
     onSettled: () =>
-      queryClient.invalidateQueries({ queryKey: ["collection"] }),
+      queryClient.invalidateQueries({ queryKey: ["collections"] }),
     onError: (error) => {
       toast.error(error?.response?.data?.message || error.message);
       return toggleModal();
@@ -68,7 +68,7 @@ const Collection = ({ collection, database }) => {
             <GoDatabase className="text-authblue" />
             <h2 className="font-medium capitalize">{collection.name}</h2>
           </div>
-          <Link to={`/dashboard/${database}/${collection._id}/documents`}>
+          <Link to={collection._id}>
             <div className="my-4 font-medium">
               Documents: {collection.documents || 0}
             </div>

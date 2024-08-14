@@ -9,8 +9,9 @@ import { queryClient } from "../App";
 import DeleteContent from "./DeleteContent";
 import Modal from "./Modal";
 import { useParams } from "react-router-dom";
+import EditDocument from "./EditDocument";
 
-const Document = ({ documentDetails }) => {
+const Document = ({ documentDetails, collectionDetails }) => {
   const { collection, database } = useParams();
   const [download1, setDownload1] = useState(false);
   const [download2, setDownload2] = useState(false);
@@ -23,28 +24,15 @@ const Document = ({ documentDetails }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteDocument,
     onSuccess: () => {
-      queryClient.setQueryData(
-        ["collection", "documents", database, collection],
-        (oldDocuments) => {
-          console.log(oldDocuments);
-          if (oldDocuments) {
-            console.log("working");
-
-            const updatedDocuments = oldDocuments.filter(
-              (doc) => doc._id !== documentDetails._id
-            );
-            oldDocuments = updatedDocuments;
-          }
-          return oldDocuments;
-        }
-      );
+      queryClient.invalidateQueries({
+        queryKey: ["collections", database, "documents", collection],
+      });
       return toggleModal();
     },
-    onSettled: () =>
-      queryClient.invalidateQueries({
-        queryKey: ["collection", "documents"],
-      }),
     onError: (error) => {
+      queryClient.invalidateQueries({
+        queryKey: ["collections", database, "documents", collection],
+      });
       toast.error(error?.response?.data?.message || error.message);
       return toggleModal();
     },
@@ -84,6 +72,13 @@ const Document = ({ documentDetails }) => {
           text="document"
           deleteFunction={deleteHandler}
           isPending={isPending}
+        />
+      </Modal>
+      <Modal isOpen={edit} closeModal={toggleEdit}>
+        <EditDocument
+          cancelModal={toggleEdit}
+          collection={collectionDetails}
+          document={documentDetails}
         />
       </Modal>
       <li className="shadow-lg rounded-xl mt-10 min-w-[250px] min-h-48">
@@ -148,7 +143,7 @@ const Document = ({ documentDetails }) => {
             <span className="bg-stone-100 rounded-lg ">
               <MdOutlineModeEditOutline
                 className="m-3 text-sm text-stone-400"
-                // onClick={() => setEditIsOpen(true)}
+                onClick={() => setEdit(true)}
               />
             </span>
             <span

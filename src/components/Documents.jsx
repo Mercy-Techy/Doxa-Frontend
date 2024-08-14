@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchDocument } from "../http";
+import { fetchCollectionDetails, fetchDocument } from "../http";
 import { useParams } from "react-router-dom";
 import Document from "./Document";
 
@@ -7,7 +7,11 @@ const Documents = () => {
   const { collection, database } = useParams();
   const { isError, data, isSuccess } = useQuery({
     queryFn: () => fetchDocument(collection, database),
-    queryKey: ["collection", "documents", database, collection],
+    queryKey: ["collections", database, "documents", collection],
+  });
+  const { data: collectionDetails } = useQuery({
+    queryKey: ["collections", database, collection],
+    queryFn: () => fetchCollectionDetails(collection, database),
   });
 
   let content = (
@@ -22,7 +26,11 @@ const Documents = () => {
     content = (
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {data.map((document) => (
-          <Document documentDetails={document} key={document._id} />
+          <Document
+            documentDetails={document}
+            key={document._id}
+            collectionDetails={collectionDetails}
+          />
         ))}
       </ul>
     );

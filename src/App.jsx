@@ -13,6 +13,7 @@ import Collections from "./components/Collections";
 import Documents from "./components/Documents";
 import DocumentDashBoard from "./pages/DocumentDashboard";
 import Schema from "./pages/Schema";
+import DatabaseRoot from "./pages/DatabaseRoot";
 
 export const queryClient = new QueryClient();
 
@@ -46,16 +47,21 @@ const router = createBrowserRouter([
         element: <Account />,
       },
       {
-        path: ":database/collections",
-        element: <Collections />,
-        children: [],
-      },
-      {
-        path: ":database/:collection/documents",
-        element: <DocumentDashBoard />,
+        path: ":database",
+        element: <DatabaseRoot />,
         children: [
-          { index: true, element: <Documents /> },
-          { path: "schema", element: <Schema /> },
+          {
+            index: true,
+            element: <Collections />,
+          },
+          {
+            path: ":collection",
+            element: <DocumentDashBoard />,
+            children: [
+              { index: true, element: <Documents /> },
+              { path: "schema", element: <Schema /> },
+            ],
+          },
         ],
       },
     ],

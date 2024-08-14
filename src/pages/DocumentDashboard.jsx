@@ -12,7 +12,7 @@ const DocumentDashBoard = () => {
   const { documentFn } = useText();
   const [isOpen, setIsOpen] = useState(false);
   const { data, isError, error } = useQuery({
-    queryKey: ["collection", database, collection],
+    queryKey: ["collections", database, collection],
     queryFn: () => fetchCollectionDetails(collection, database),
   });
 
@@ -29,12 +29,12 @@ const DocumentDashBoard = () => {
   return (
     <>
       <Modal isOpen={isOpen} closeModal={toggleModal}>
-        <AddDocument cancelModal={toggleModal} />
+        <AddDocument cancelModal={toggleModal} collection={data} />
       </Modal>
       <div className="bg-white px-10 py-8 p mt-2 min-h-screen">
         <div className="flex justify-between items-center">
           <div className="flex gap-5 items-center">
-            <Link to={`/dashboard/${database}/${collection}/documents`}>
+            <Link>
               <h1 className="font-semibold text-xl hover:text-authblue ">
                 All Documents
               </h1>

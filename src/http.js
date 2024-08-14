@@ -155,6 +155,14 @@ export const addDocument = async (data) => {
   return response.data;
 };
 
+export const editDocument = async (data) => {
+  const token = getToken();
+  const response = await axios.put(`${baseurl}/document`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
 export const deleteDocument = async (id) => {
   const token = getToken();
   const response = await axios.delete(`${baseurl}/document/${id}`, {
