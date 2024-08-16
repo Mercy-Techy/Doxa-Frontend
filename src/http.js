@@ -54,6 +54,21 @@ export const addDatabase = async (data) => {
   });
   return response.data;
 };
+export const addDatabaseUser = async (data) => {
+  const token = getToken();
+  const response = await axios.post(`${baseurl}/database/user`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+export const acceptInvite = async (data) => {
+  const response = await axios.post(
+    `${baseurl}/database/user/acceptInvite`,
+    data
+  );
+  return response.data;
+};
 
 export const editDatabase = async (data) => {
   const token = getToken();

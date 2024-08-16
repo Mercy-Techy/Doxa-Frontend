@@ -1,4 +1,5 @@
 import Modal from "react-modal";
+import { AiOutlineClose } from "react-icons/ai";
 
 const customStyles = {
   content: {
@@ -29,7 +30,10 @@ Modal.setAppElement("#modal");
 const ModalComponent = ({ isOpen, closeModal, children }) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
-      {children}
+      <span className="absolute top-2 right-2" onClick={closeModal}>
+        <AiOutlineClose className="font-bold text-xl" />
+      </span>
+      <div className="mt-2">{children}</div>
     </Modal>
   );
 };

@@ -142,7 +142,6 @@ const CreateCollection = ({ cancelModal, action, mutationFn }) => {
 
   useEffect(() => {
     if (isError) {
-      cancelModal();
       toast.error(error?.response?.data?.message || error.message);
     }
   }, [isError, error]);

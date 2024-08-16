@@ -1,16 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import Database from "./Database";
 import { addDatabase, fetchDatabase } from "../http";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import CreateDatabase from "./CreateDatabase";
+import { useText } from "../store/DashBoardContext";
 
 const Databases = () => {
+  const { databaseFn } = useText();
   const [isOpen, setIsOpen] = useState(false);
   const { isError, data, isSuccess } = useQuery({
     queryFn: fetchDatabase,
     queryKey: ["database"],
   });
+  useEffect(() => {
+    databaseFn;
+  }, []);
   let content = (
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <li className="shadow-lg rounded-xl mt-10 w-[280px] h-48 animate-pulse bg-stone-100"></li>

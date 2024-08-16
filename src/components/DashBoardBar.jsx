@@ -31,13 +31,6 @@ const DashBoardBar = () => {
             Manage {text.subHeading}
           </p>
         </div>
-        <div className="relative w-2/6">
-          <input
-            type="text"
-            className="outline-none rounded-lg px-4 py-2 w-full"
-          />
-          <CiSearch className="absolute bottom-2 left-2 font-extrabold text-xl" />
-        </div>
         <div className="hidden md:flex gap-4 items-center capitalize">
           <p>{data?.firstname || "User"}</p>
           <Link to="/dashboard/account">

@@ -10,12 +10,15 @@ import { deleteDatabase, editDatabase } from "../http";
 import { queryClient } from "../App";
 import { toast } from "react-toastify";
 import CreateDatabase from "./CreateDatabase";
+import InviteUser from "./InviteUser";
 
 const Database = ({ name, collections, documents, _id }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isInvite, setIsInvite] = useState(false);
   const [editIsOpen, setEditIsOpen] = useState(false);
 
   const toggleModal = () => setIsOpen(false);
+  const toggleInvite = () => setIsInvite(false);
   const toggleEditModal = () => setEditIsOpen(false);
 
   const { mutate, isPending } = useMutation({
@@ -60,6 +63,9 @@ const Database = ({ name, collections, documents, _id }) => {
           defaultValue={name}
         />
       </Modal>
+      <Modal isOpen={isInvite} closeModal={toggleInvite}>
+        <InviteUser _id={_id} cancelModal={toggleInvite} />
+      </Modal>
       <li className="shadow-lg rounded-xl mt-10 min-w-[250px] h-48">
         <div className="bg-green-100 h-2 rounded-t-xl"></div>
         <div className="p-6">
@@ -74,7 +80,10 @@ const Database = ({ name, collections, documents, _id }) => {
             </div>
           </Link>
           <div className="flex justify-between items-center">
-            <button className="rounded-md border border-textgray text-textgray text-xs px-4 py-1">
+            <button
+              onClick={() => setIsInvite(true)}
+              className="rounded-md border border-textgray text-textgray text-xs px-4 py-1 outline-none"
+            >
               Invite users
             </button>
             <div className="flex items-center gap-3">

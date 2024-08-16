@@ -14,6 +14,7 @@ import Documents from "./components/Documents";
 import DocumentDashBoard from "./pages/DocumentDashboard";
 import Schema from "./pages/Schema";
 import DatabaseRoot from "./pages/DatabaseRoot";
+import AcceptInvite from "./pages/AcceptInvite";
 
 export const queryClient = new QueryClient();
 
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
   {
     path: "/forgot-password",
     element: <ForgotPassword />,
+  },
+  {
+    path: "/invite/:token",
+    element: <AcceptInvite />,
   },
   {
     path: "/dashboard",
