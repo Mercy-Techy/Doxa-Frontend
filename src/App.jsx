@@ -15,6 +15,8 @@ import DocumentDashBoard from "./pages/DocumentDashboard";
 import Schema from "./pages/Schema";
 import DatabaseRoot from "./pages/DatabaseRoot";
 import AcceptInvite from "./pages/AcceptInvite";
+import CollectionDashboard from "./pages/CollectionDashboard";
+import Users from "./pages/User";
 
 export const queryClient = new QueryClient();
 
@@ -56,8 +58,15 @@ const router = createBrowserRouter([
         element: <DatabaseRoot />,
         children: [
           {
-            index: true,
-            element: <Collections />,
+            path: "",
+            element: <CollectionDashboard />,
+            children: [
+              {
+                index: true,
+                element: <Collections />,
+              },
+              { path: "users", element: <Users /> },
+            ],
           },
           {
             path: ":collection",
