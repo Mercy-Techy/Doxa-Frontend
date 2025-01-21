@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import Modal from "../components/Modal";
 import CreateDatabase from "./CreateDatabase";
 import { useText } from "../store/DashBoardContext";
+import Pagination from "./Pagination";
 
 const Databases = () => {
   const { databaseFn } = useText();
   const [isOpen, setIsOpen] = useState(false);
-  const { isError, data, isSuccess } = useQuery({
-    queryFn: fetchDatabase,
-    queryKey: ["database"],
+  const [page, setPage] = useState(1);
+  const { isError, data, isSuccess, isLoading } = useQuery({
+    queryFn: () => fetchDatabase(page),
+    queryKey: ["database", page],
   });
   useEffect(() => {
     databaseFn;
@@ -24,17 +26,28 @@ const Databases = () => {
     </ul>
   );
 
-  if (data) {
-    content = (
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-16 gap-5">
-        {data.map((database) => (
-          <Database key={database._id} {...database} />
-        ))}
-      </ul>
-    );
-  }
-  if ((isSuccess && !data) || (isSuccess && data?.length == 0) || isError) {
-    content = <p>You have no database</p>;
+  if (!isLoading) {
+    if (data) {
+      content = (
+        <>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-16 gap-5">
+            {data?.data?.map((database) => (
+              <Database key={database._id} {...database} />
+            ))}
+          </ul>
+          {data.totalItems > 0 && (
+            <Pagination page={page} setPage={setPage} data={data} />
+          )}
+        </>
+      );
+    }
+    if (
+      (isSuccess && !data) ||
+      (isSuccess && data?.totalItems == 0) ||
+      isError
+    ) {
+      content = <p>You have no database</p>;
+    }
   }
 
   const toggleModal = () => setIsOpen(!isOpen);

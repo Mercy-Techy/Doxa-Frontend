@@ -39,9 +39,9 @@ export const changePassword = async (data) => {
   return response.data;
 };
 
-export const fetchDatabase = async () => {
+export const fetchDatabase = async (page) => {
   const token = getToken();
-  const response = await axios(`${baseurl}/database`, {
+  const response = await axios(`${baseurl}/database?page=${page}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data.data;
@@ -135,9 +135,9 @@ export const addCollection = async (data) => {
   return response.data;
 };
 
-export const fetchCollection = async (id) => {
+export const fetchCollection = async (id, page) => {
   const token = getToken();
-  const response = await axios(`${baseurl}/database/${id}`, {
+  const response = await axios(`${baseurl}/database/${id}?page=${page}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response.data.data;
@@ -152,11 +152,14 @@ export const fetchCollectionDetails = async (id, database) => {
   );
   return response.data.data;
 };
-export const fetchDocument = async (id, database) => {
+export const fetchDocument = async (id, database, page) => {
   const token = getToken();
-  const response = await axios(`${baseurl}/collection/${id}/${database}`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const response = await axios(
+    `${baseurl}/collection/${id}/${database}?page=${page}`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   return response.data.data;
 };
 
