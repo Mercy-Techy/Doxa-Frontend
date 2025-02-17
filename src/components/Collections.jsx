@@ -8,7 +8,7 @@ import Pagination from "./Pagination";
 const Collections = () => {
   const { database } = useParams();
   const [page, setPage] = useState(1);
-  const { isError, data, isSuccess, isLoading } = useQuery({
+  const { isError, data, isSuccess, isPending } = useQuery({
     queryFn: () => fetchCollection(database, page),
     queryKey: ["collections", database, page],
   });
@@ -20,7 +20,7 @@ const Collections = () => {
       <li className="shadow-lg rounded-xl mt-10 w-[280px] h-48 animate-pulse bg-stone-100"></li>
     </ul>
   );
-  if (!isLoading) {
+  if (!isPending) {
     if (data) {
       content = (
         <>

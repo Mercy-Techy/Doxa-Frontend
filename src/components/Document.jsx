@@ -17,6 +17,7 @@ const Document = ({ documentDetails, collectionDetails }) => {
   const [download2, setDownload2] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [linkedDoc, setLinkedDoc] = useState("");
 
   const toggleModal = () => setIsOpen(false);
   const toggleEdit = () => setEdit(false);
@@ -81,14 +82,103 @@ const Document = ({ documentDetails, collectionDetails }) => {
           document={documentDetails}
         />
       </Modal>
+      <Modal isOpen={linkedDoc} closeModal={() => setLinkedDoc("")}>
+        <div className="p-6 pt-4">
+          {linkedDoc?.text?.map((tx) => {
+            if (tx.dataType === "link to another document") {
+              return (
+                <p className="my-2 gap-1 flex items-center">
+                  {tx.name}:
+                  <button
+                    onClick={() => setLinkedDoc(tx?.linkedDocument)}
+                    className="text-authblue border border-authblue text-sm px-4 py-1 rounded-md font-semibold"
+                  >
+                    View
+                  </button>
+                </p>
+              );
+            }
+            return (
+              <p className="capitalize" key={tx._id}>
+                {tx.name}: <span className="font-bold">{`${tx.value}`}</span>
+              </p>
+            );
+          })}
+          {linkedDoc.ifFile &&
+            linkedDoc?.files?.map((fl) => {
+              if (fl.fileType === "image" || fl.fileType === "video") {
+                return (
+                  <div
+                    className="capitalize flex gap-1 items-center my-2"
+                    key={fl._id}
+                  >
+                    <span>{fl.name}:</span>
+                    <div className="flex items-center gap-3">
+                      <button
+                        className="text-authblue border border-authblue text-sm px-4 py-1 rounded-md font-semibold "
+                        onClick={() => viewImage(fl.url)}
+                      >
+                        View
+                      </button>
+                      <button
+                        disabled={download1}
+                        className="text-textlime border border-textlime text-sm px-4 py-1 rounded-md font-semibold "
+                        onClick={() => {
+                          setDownload1(true);
+                          handleDownload(fl.url, setDownload1);
+                        }}
+                      >
+                        Download
+                      </button>
+                    </div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div
+                    className="capitalize flex gap-1 items-center my-2"
+                    key={fl._id}
+                  >
+                    <span>{fl.name}:</span>
+                    <button
+                      disabled={download2}
+                      className="text-textlime border border-textlime text-sm px-4 py-1 rounded-md font-semibold "
+                      onClick={() => {
+                        setDownload2(true);
+                        handleDownload(fl.url, setDownload2);
+                      }}
+                    >
+                      Download
+                    </button>
+                  </div>
+                );
+              }
+            })}
+        </div>
+      </Modal>
       <li className="shadow-lg rounded-xl mt-10 min-w-[250px] min-h-48">
         <div className="bg-green-100 h-2 rounded-t-xl"></div>
         <div className="p-6 pt-4">
-          {documentDetails?.text?.map((tx) => (
-            <p className="capitalize" key={tx._id}>
-              {tx.name}: <span className="font-bold">{`${tx.value}`}</span>
-            </p>
-          ))}
+          {documentDetails?.text?.map((tx) => {
+            if (tx.dataType === "link to another document") {
+              return (
+                <p className="my-2 gap-1 flex items-center">
+                  {tx.name}:
+                  <button
+                    onClick={() => setLinkedDoc(tx?.linkedDocument)}
+                    className="text-authblue border border-authblue text-sm px-4 py-1 rounded-md font-semibold"
+                  >
+                    View
+                  </button>
+                </p>
+              );
+            }
+            return (
+              <p className="capitalize" key={tx._id}>
+                {tx.name}: <span className="font-bold">{`${tx.value}`}</span>
+              </p>
+            );
+          })}
           {documentDetails.ifFile &&
             documentDetails?.files?.map((fl) => {
               if (fl.fileType === "image" || fl.fileType === "video") {

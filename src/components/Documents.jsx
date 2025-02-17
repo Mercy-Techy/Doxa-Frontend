@@ -8,7 +8,7 @@ import Pagination from "./Pagination";
 const Documents = () => {
   const { collection, database } = useParams();
   const [page, setPage] = useState(1);
-  const { isError, data, isSuccess, isLoading } = useQuery({
+  const { isError, data, isSuccess, isPending } = useQuery({
     queryFn: () => fetchDocument(collection, database, page),
     queryKey: ["collections", database, "documents", collection, page],
   });
@@ -25,7 +25,7 @@ const Documents = () => {
     </ul>
   );
 
-  if (!isLoading) {
+  if (!isPending) {
     if (data) {
       content = (
         <>

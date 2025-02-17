@@ -51,10 +51,16 @@ const CreateCollection = ({ cancelModal, action, mutationFn }) => {
       ...objectDetails,
     }));
   };
-  const addFieldHandler = (event) => {
+  const addFieldHandler = (event, index = 0, collectionId) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const fieldDetails = Object.fromEntries(formData);
+    if (fieldDetails?.dataType === "link to another document") {
+      if (!collectionId) {
+        return toast.error("Linked collection is required");
+      }
+      fieldDetails.data = { collectionId };
+    }
     const updatedDetails = [...formDetails.fields, fieldDetails];
     setformDetails((prevState) => ({
       ...prevState,
@@ -64,10 +70,16 @@ const CreateCollection = ({ cancelModal, action, mutationFn }) => {
     }));
   };
 
-  const editFieldHandler = (event) => {
+  const editFieldHandler = (event, index = 0, collectionId) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const fieldDetails = Object.fromEntries(formData);
+    if (fieldDetails?.dataType === "link to another document") {
+      if (!collectionId) {
+        return toast.error("Linked collection is required");
+      }
+      fieldDetails.data = { collectionId };
+    }
     const updatedDetails = [...formDetails.fields];
     updatedDetails[edit.id] = fieldDetails;
     setformDetails((prevState) => ({

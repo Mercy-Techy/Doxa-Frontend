@@ -50,10 +50,16 @@ const EditCollection = ({ collection, database, toggleEdit }) => {
     }
   }, [isError, error]);
 
-  const addFieldHandler = (event) => {
+  const addFieldHandler = (event, index = 0, collectionId) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const fieldDetails = Object.fromEntries(formData);
+    if (fieldDetails?.dataType === "link to another document") {
+      if (!collectionId) {
+        return toast.error("Linked collection is required");
+      }
+      fieldDetails.data = { collectionId };
+    }
     const updatedDetails = [...details.fields, fieldDetails];
     setDetails((prevState) => ({
       ...prevState,
@@ -62,10 +68,16 @@ const EditCollection = ({ collection, database, toggleEdit }) => {
     setAddField(false);
   };
 
-  const editFieldHandler = (event, index) => {
+  const editFieldHandler = (event, index, collectionId) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const fieldDetails = Object.fromEntries(formData);
+    if (fieldDetails?.dataType === "link to another document") {
+      if (!collectionId) {
+        return toast.error("Linked collection is required");
+      }
+      fieldDetails.data = { collectionId };
+    }
     const updatedDetails = [...details.fields];
     updatedDetails[index] = fieldDetails;
     setDetails((prevState) => ({
@@ -90,6 +102,7 @@ const EditCollection = ({ collection, database, toggleEdit }) => {
     setAddField(false);
   };
   const addCollection = () => {
+    console.log(details);
     mutate(details);
   };
 

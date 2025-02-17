@@ -27,7 +27,11 @@ const customStyles = {
 
 Modal.setAppElement("#modal");
 
-const ModalComponent = ({ isOpen, closeModal, children }) => {
+const ModalComponent = ({
+  isOpen = false,
+  closeModal = () => {},
+  children,
+}) => {
   return (
     <Modal isOpen={isOpen} onRequestClose={closeModal} style={customStyles}>
       <span className="absolute top-2 right-2" onClick={closeModal}>

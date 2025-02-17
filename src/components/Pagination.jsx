@@ -1,6 +1,12 @@
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 
-const Pagination = ({ data, page, setPage, margin = "my-16" }) => {
+const Pagination = ({
+  data,
+  page,
+  setPage,
+  margin = "my-16",
+  margin2 = "my-16",
+}) => {
   const nextPage = () => {
     if (page < data?.totalPages) setPage(page + 1);
     return;
@@ -11,7 +17,7 @@ const Pagination = ({ data, page, setPage, margin = "my-16" }) => {
   };
   return (
     <div className={`flex justify-center items-center ${margin} w-full`}>
-      <div className="flex items-center gap-2 mt-16">
+      <div className={`flex items-center gap-2 ${margin2}`}>
         <MdNavigateBefore
           onClick={prevPage}
           className={`${

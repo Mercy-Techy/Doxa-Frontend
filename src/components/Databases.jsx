@@ -11,7 +11,7 @@ const Databases = () => {
   const { databaseFn } = useText();
   const [isOpen, setIsOpen] = useState(false);
   const [page, setPage] = useState(1);
-  const { isError, data, isSuccess, isLoading } = useQuery({
+  const { isError, data, isSuccess, isPending } = useQuery({
     queryFn: () => fetchDatabase(page),
     queryKey: ["database", page],
   });
@@ -26,7 +26,7 @@ const Databases = () => {
     </ul>
   );
 
-  if (!isLoading) {
+  if (!isPending) {
     if (data) {
       content = (
         <>
