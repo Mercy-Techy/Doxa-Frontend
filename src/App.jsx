@@ -17,6 +17,11 @@ import DatabaseRoot from "./pages/DatabaseRoot";
 import AcceptInvite from "./pages/AcceptInvite";
 import CollectionDashboard from "./pages/CollectionDashboard";
 import Users from "./pages/User";
+import { isLoggedIn, logout, tokenLoader } from "./util/auth";
+import AdminDashboard from "./pages/AdminDashboard";
+import DashBoardAdmin from "./components/DashboardAdmin";
+import AdminUsers from "./components/AdminUsers";
+import AdminDBs from "./components/AdminDBs";
 
 export const queryClient = new QueryClient();
 
@@ -44,18 +49,22 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <DashBoard />,
+    loader: tokenLoader,
     children: [
       {
         index: true,
         element: <Databases />,
+        loader: isLoggedIn,
       },
       {
         path: "account",
         element: <Account />,
+        loader: isLoggedIn,
       },
       {
         path: ":database",
         element: <DatabaseRoot />,
+        loader: isLoggedIn,
         children: [
           {
             path: "",
@@ -80,6 +89,34 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/admin-dashboard",
+    loader: tokenLoader,
+    element: <AdminDashboard />,
+    children: [
+      {
+        index: true,
+        element: <DashBoardAdmin />,
+        loader: isLoggedIn,
+      },
+      {
+        path: "users",
+        element: <AdminUsers />,
+        loader: isLoggedIn,
+      },
+      {
+        path: "dbs",
+        element: <AdminDBs />,
+        loader: isLoggedIn,
+      },
+      {
+        path: "account",
+        element: <Account />,
+        loader: isLoggedIn,
+      },
+    ],
+  },
+  { path: "/logout", loader: logout, element: <Login /> },
 ]);
 
 const App = () => (

@@ -18,6 +18,14 @@ const Databases = () => {
   useEffect(() => {
     databaseFn;
   }, []);
+  const cardColors = [
+    "bg-[#D5FBCE]",
+    "bg-[#CEE8FB]",
+    "bg-[#FBCEF6]",
+    "bg-[#FBE6CE]",
+    "bg-[#DFCEFB]",
+    "bg-[#CEFBF0]",
+  ];
   let content = (
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <li className="shadow-lg rounded-xl mt-10 w-[280px] h-48 animate-pulse bg-stone-100"></li>
@@ -31,8 +39,12 @@ const Databases = () => {
       content = (
         <>
           <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-16 gap-5">
-            {data?.data?.map((database) => (
-              <Database key={database._id} {...database} />
+            {data?.data?.map((database, index) => (
+              <Database
+                key={database._id}
+                {...database}
+                bg={cardColors[index % cardColors?.length]}
+              />
             ))}
           </ul>
           {data.totalItems > 0 && (

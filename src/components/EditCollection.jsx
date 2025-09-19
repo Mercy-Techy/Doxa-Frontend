@@ -102,7 +102,6 @@ const EditCollection = ({ collection, database, toggleEdit }) => {
     setAddField(false);
   };
   const addCollection = () => {
-    console.log(details);
     mutate(details);
   };
 

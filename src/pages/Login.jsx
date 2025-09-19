@@ -11,14 +11,17 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "../http";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { addToken } from "../util/auth";
 
 const Login = () => {
   const navigate = useNavigate();
   const { mutate, isError, isPending, error } = useMutation({
     mutationFn: login,
-    onSuccess: (data) => {
-      addToken(data.data.token);
+    onSuccess(data) {
+      localStorage.setItem("token", data.data.token);
+      const expiration = new Date();
+      expiration.setHours(expiration.getHours() + 2);
+      localStorage.setItem("expiration", expiration);
+      if (data?.data?.user?.admin) return navigate("/admin-dashboard");
       return navigate("/dashboard");
     },
   });

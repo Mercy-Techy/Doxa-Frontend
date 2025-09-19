@@ -12,7 +12,7 @@ import { toast } from "react-toastify";
 import CreateDatabase from "./CreateDatabase";
 import InviteUser from "./InviteUser";
 
-const Database = ({ name, collections, documents, _id }) => {
+const Database = ({ name, collections, documents, _id, bg }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isInvite, setIsInvite] = useState(false);
   const [editIsOpen, setEditIsOpen] = useState(false);
@@ -67,7 +67,7 @@ const Database = ({ name, collections, documents, _id }) => {
         <InviteUser _id={_id} cancelModal={toggleInvite} />
       </Modal>
       <li className="shadow-lg rounded-xl mt-10 min-w-[250px] h-48">
-        <div className="bg-green-100 h-2 rounded-t-xl"></div>
+        <div className={`${bg} h-2 rounded-t-xl`}></div>
         <div className="p-6">
           <div className="flex gap-6 items-center">
             <GoDatabase className="text-authblue" />

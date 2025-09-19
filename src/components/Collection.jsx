@@ -11,7 +11,7 @@ import Modal from "./Modal";
 import { toast } from "react-toastify";
 import EditCollection from "./EditCollection";
 
-const Collection = ({ collection, database }) => {
+const Collection = ({ collection, database, bg }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [edit, setEdit] = useState(false);
 
@@ -62,7 +62,7 @@ const Collection = ({ collection, database }) => {
         />
       </Modal>
       <li className="shadow-lg rounded-xl mt-10 mix-w-[250px] h-48">
-        <div className="bg-green-100 h-2 rounded-t-xl"></div>
+        <div className={`${bg} h-2 rounded-t-xl`}></div>
         <div className="p-6">
           <div className="flex gap-6 items-center">
             <GoDatabase className="text-authblue" />

@@ -202,3 +202,44 @@ export const deleteDocument = async (id) => {
   });
   return response.data;
 };
+
+export const fetchDashboardDetails = async () => {
+  const token = getToken();
+  const response = await axios(`${baseurl}/admin/db-state`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data.data;
+};
+
+export const fetchUsers = async (page = 1, limit = 10) => {
+  const token = getToken();
+  const response = await axios(`${baseurl}/admin/users`, {
+    headers: { Authorization: `Bearer ${token}` },
+    params: { page, limit },
+  });
+  return response.data.data;
+};
+
+export const fetchDBs = async (page = 1, limit = 10) => {
+  const token = getToken();
+  const response = await axios(`${baseurl}/admin/databases`, {
+    headers: { Authorization: `Bearer ${token}` },
+    params: { page, limit },
+  });
+  return response.data.data;
+};
+
+export const blockUser = async (body) => {
+  const token = getToken();
+  const response = await axios.post(`${baseurl}/admin/block-user`, body, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data.data;
+};
+export const lockDb = async (body) => {
+  const token = getToken();
+  const response = await axios.post(`${baseurl}/admin/lock-db`, body, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data.data;
+};

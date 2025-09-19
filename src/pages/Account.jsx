@@ -13,7 +13,6 @@ import { MdOutlineModeEditOutline } from "react-icons/md";
 import { queryClient } from "../App";
 import passwordIcon from "../assets/password.png";
 import Input from "../components/Input";
-import { deleteToken } from "../util/auth";
 import { toast } from "react-toastify";
 
 const Account = () => {
@@ -52,8 +51,7 @@ const Account = () => {
   } = useMutation({
     mutationFn: changePassword,
     onSuccess: () => {
-      deleteToken();
-      return navigate("/login");
+      return navigate("/logout");
     },
   });
   const {

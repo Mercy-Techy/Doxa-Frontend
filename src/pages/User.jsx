@@ -16,7 +16,7 @@ const Users = () => {
   const [open, setOpen] = useState(false);
 
   const { isError, data, error } = useQuery({
-    queryFn: fetchDatabase,
+    queryFn: () => fetchDatabase(1),
     queryKey: ["database"],
   });
   const { mutate, isPending } = useMutation({
@@ -60,7 +60,7 @@ const Users = () => {
   let content = <p>Loading database users...</p>;
 
   if (data) {
-    const DB = data.find((db) => db._id === database);
+    const DB = data?.data?.find((db) => db._id === database);
     if (DB) {
       content = (
         <ul className="font-bold capitalize">

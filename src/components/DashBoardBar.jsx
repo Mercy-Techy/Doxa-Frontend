@@ -1,12 +1,10 @@
 import woman from "../assets/woman1.png";
-import { CiSearch } from "react-icons/ci";
 import { useText } from "../store/DashBoardContext";
 import { useQuery } from "@tanstack/react-query";
 import { fetchUserDetails } from "../http";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import { CgArrowLongLeft } from "react-icons/cg";
 
 const DashBoardBar = () => {
   const { text } = useText();
@@ -41,11 +39,6 @@ const DashBoardBar = () => {
             />
           </Link>
         </div>
-      </div>
-      <div className="mt-2">
-        <Link to=".">
-          <CgArrowLongLeft className="text-4xl" />
-        </Link>
       </div>
     </div>
   );

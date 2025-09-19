@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import { useText } from "../store/DashBoardContext";
-import { Link, Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import Modal from "../components/Modal";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCollectionDetails } from "../http";
 import { toast } from "react-toastify";
 import AddDocument from "../components/AddDocument";
+import { CgArrowLongLeft } from "react-icons/cg";
 
 const DocumentDashBoard = () => {
   const { database, collection } = useParams();
+  const navigate = useNavigate();
   const { documentFn } = useText();
   const [isOpen, setIsOpen] = useState(false);
   const { data, isError, error } = useQuery({
@@ -31,6 +33,9 @@ const DocumentDashBoard = () => {
       <Modal isOpen={isOpen} closeModal={toggleModal}>
         <AddDocument cancelModal={toggleModal} collection={data} />
       </Modal>
+      <div className="mt-2">
+        <CgArrowLongLeft className="text-4xl" onClick={() => navigate(-1)} />
+      </div>
       <div className="bg-white px-10 py-8 p mt-2 min-h-screen">
         <div className="flex justify-between items-center">
           <div className="flex gap-5 items-center">

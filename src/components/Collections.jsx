@@ -12,6 +12,14 @@ const Collections = () => {
     queryFn: () => fetchCollection(database, page),
     queryKey: ["collections", database, page],
   });
+  const cardColors = [
+    "bg-[#D5FBCE]",
+    "bg-[#CEE8FB]",
+    "bg-[#FBCEF6]",
+    "bg-[#FBE6CE]",
+    "bg-[#DFCEFB]",
+    "bg-[#CEFBF0]",
+  ];
 
   let content = (
     <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -25,10 +33,11 @@ const Collections = () => {
       content = (
         <>
           <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 mb-16 gap-5">
-            {data?.data?.map((collection) => (
+            {data?.data?.map((collection, index) => (
               <Collection
                 key={collection._id}
                 collection={collection}
+                bg={cardColors[index % cardColors?.length]}
                 database={database}
               />
             ))}
