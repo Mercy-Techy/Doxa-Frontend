@@ -19,7 +19,6 @@ The frontend communicates with the backend API using TanStack Query for data fet
 - TanStack Query
 - TailwindCSS
 - Axios for API requests
-- Cloudinary media previews (via URLs)
 - Vite
 ## Features
 - Dashboard listing all databases
